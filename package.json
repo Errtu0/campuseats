@@ -1,14 +1,20 @@
 {
-  "name": "campuseats",
+  "name": "campuseats-monorepo",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "workspaces": ["apps/*", "packages/*"],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "db:migrate": "npm run migrate --workspace=packages/database",
+    "db:studio": "npm run studio --workspace=packages/database",
+    "server": "npm run dev --workspace=apps/server",
+    "client": "npx expo start --workspace=apps/client",
+    "db:seed": "npm run seed --workspace=packages/database",
+    "db:reset": "npm run db:migrate && npm run db:seed",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  }
 }
